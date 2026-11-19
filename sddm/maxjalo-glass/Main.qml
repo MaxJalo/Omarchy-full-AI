@@ -141,65 +141,6 @@ Rectangle {
       sourceSize.height: height
     }
 
-    Item {
-      id: edgeBlurMask
-      anchors.fill: parent
-      visible: false
-
-      Canvas {
-        id: edgeBlurMaskCanvas
-        anchors.fill: parent
-
-        onPaint: {
-          var ctx = getContext("2d")
-          ctx.clearRect(0, 0, width, height)
-          if (width <= 0 || height <= 0) return
-
-          ctx.save()
-          var cx = width * 0.5
-          var cy = height * 0.5
-          var rx = width * 0.54
-          var ry = height * 0.54
-          ctx.translate(cx, cy)
-          ctx.scale(1, ry / rx)
-          var grad = ctx.createRadialGradient(0, 0, rx * 0.34, 0, 0, rx * 1.02)
-          grad.addColorStop(0.0, "rgba(255,255,255,0.0)")
-          grad.addColorStop(0.38, "rgba(255,255,255,0.18)")
-          grad.addColorStop(0.68, "rgba(255,255,255,0.68)")
-          grad.addColorStop(0.88, "rgba(255,255,255,0.96)")
-          grad.addColorStop(1.0, "rgba(255,255,255,1.0)")
-          ctx.fillStyle = grad
-          ctx.fillRect(-cx, -cy * (rx / ry), width, height * (rx / ry))
-          ctx.restore()
-        }
-
-        onWidthChanged: requestPaint()
-        onHeightChanged: requestPaint()
-        Component.onCompleted: requestPaint()
-      }
-    }
-
-    ShaderEffectSource {
-      id: edgeBlurMaskSource
-      sourceItem: edgeBlurMask
-      hideSource: true
-      live: true
-    }
-
-    MultiEffect {
-      anchors.fill: wallpaper
-      source: wallpaper
-      autoPaddingEnabled: false
-      blurEnabled: wallpaper.status === Image.Ready
-      blur: 1.0
-      blurMax: 72
-      blurMultiplier: 1.25
-      contrast: -0.04
-      brightness: -0.03
-      maskEnabled: true
-      maskSource: edgeBlurMaskSource
-    }
-
     Canvas {
       anchors.fill: parent
       onPaint: {

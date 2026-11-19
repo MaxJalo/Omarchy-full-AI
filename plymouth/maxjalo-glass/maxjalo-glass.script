@@ -1,10 +1,14 @@
-# Maxjalo Glass Plymouth Theme Script
+# Maxjalo Glass Plymouth Theme Script (strict Plymouth Script syntax, zero ternary ops)
 
 Window.SetBackgroundTopColor(0.035, 0.043, 0.055);
 Window.SetBackgroundBottomColor(0.035, 0.043, 0.055);
 
 bg.original = Image("background.png");
-bg.scaled = bg.original.Scale(Window.GetWidth(), Window.GetHeight());
+if (Window.GetWidth() == bg.original.GetWidth() && Window.GetHeight() == bg.original.GetHeight()) {
+  bg.scaled = bg.original;
+} else {
+  bg.scaled = bg.original.Scale(Window.GetWidth(), Window.GetHeight());
+}
 bg.sprite = Sprite(bg.scaled);
 bg.sprite.SetPosition(0, 0, -10);
 bg.sprite.SetOpacity(1);
@@ -12,8 +16,14 @@ bg.sprite.SetOpacity(1);
 # Scale factor relative to 1080p reference
 scale_x = Window.GetWidth() / 1920.0;
 scale_y = Window.GetHeight() / 1080.0;
-ui_scale = (scale_x < scale_y) ? scale_x : scale_y;
-if (ui_scale < 0.5) ui_scale = 0.5;
+if (scale_x < scale_y) {
+  ui_scale = scale_x;
+} else {
+  ui_scale = scale_y;
+}
+if (ui_scale < 0.5) {
+  ui_scale = 0.5;
+}
 
 # User badge
 badge.orig = Image("badge.png");
@@ -36,7 +46,9 @@ badge.sprite.SetOpacity(1);
 
 bullet.orig = Image("bullet.png");
 bullet.size = Math.Int(12 * ui_scale);
-if (bullet.size < 6) bullet.size = 6;
+if (bullet.size < 6) {
+  bullet.size = 6;
+}
 bullet.gap = Math.Int(8 * ui_scale);
 bullet.img = bullet.orig.Scale(bullet.size, bullet.size);
 bullet.sprites = [];
@@ -68,7 +80,9 @@ fun update_progress_bar(progress) {
   if (progress > global.max_progress) {
     global.max_progress = progress;
     w = Math.Int(progress_bar.full_w * progress);
-    if (w < 1) w = 1;
+    if (w < 1) {
+      w = 1;
+    }
     progress_bar.img = progress_bar.orig.Scale(w, progress_bar.full_h);
     progress_bar.sprite.SetImage(progress_bar.img);
   }
@@ -79,7 +93,9 @@ fun refresh_callback() {
   if (global.fake_progress_active == 1) {
     elapsed = global.animation_frame / 50.0;
     ratio = elapsed / 12.0;
-    if (ratio > 1.0) ratio = 1.0;
+    if (ratio > 1.0) {
+      ratio = 1.0;
+    }
     eased = 1 - ((1 - ratio) * (1 - ratio));
     update_progress_bar(eased * 0.75);
   }
@@ -112,13 +128,16 @@ fun display_password_callback(prompt, bullets) {
   hide_bullets();
 
   count = bullets;
-  if (count > 22) count = 22;
+  if (count > 22) {
+    count = 22;
+  }
 
   if (count > 1) {
     total_w = count * bullet.size + (count - 1) * bullet.gap;
   } else {
     total_w = count * bullet.size;
   }
+
   start_x = Window.GetWidth() / 2 - total_w / 2;
   bullet_y = entry.y + entry.img.GetHeight() / 2 - bullet.size / 2;
 
@@ -135,7 +154,9 @@ Plymouth.SetDisplayNormalFunction(display_normal_callback);
 Plymouth.SetDisplayPasswordFunction(display_password_callback);
 
 fun progress_callback(duration, progress) {
-  if (global.fake_progress_start_time == 0.0) global.fake_progress_start_time = duration;
+  if (global.fake_progress_start_time == 0.0) {
+    global.fake_progress_start_time = duration;
+  }
   if (duration > global.fake_progress_start_time && progress > global.max_progress) {
     global.fake_progress_active = 0;
     update_progress_bar(progress);
