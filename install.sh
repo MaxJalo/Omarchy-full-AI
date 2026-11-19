@@ -34,7 +34,7 @@ backup_if_exists() {
   fi
 }
 
-mkdir -p ~/.config/{hypr,ghostty,fish,omarchy/plugins,omarchy/defaults,omarchy/backgrounds/blasphemous,opencode}
+mkdir -p ~/.config/{hypr,ghostty,fish,omarchy/plugins,omarchy/defaults,omarchy/backgrounds/blasphemous,opencode,environment.d} ~/.local/share/applications
 
 # 3. Copy Hyprland, Ghostty, Fish, Starship, XDG terminal
 backup_if_exists ~/.config/hypr
@@ -43,6 +43,13 @@ cp -a "$REPO_DIR"/config/hypr/.luarc.json ~/.config/hypr/
 
 backup_if_exists ~/.config/ghostty/config
 cp -a "$REPO_DIR/config/ghostty/config" ~/.config/ghostty/config
+if [[ -f "$REPO_DIR/config/applications/com.mitchellh.ghostty.desktop" ]]; then
+  cp -a "$REPO_DIR/config/applications/com.mitchellh.ghostty.desktop" ~/.local/share/applications/
+  command -v update-desktop-database >/dev/null 2>&1 && update-desktop-database ~/.local/share/applications || true
+fi
+if [[ -d "$REPO_DIR/config/environment.d" ]]; then
+  cp -a "$REPO_DIR"/config/environment.d/* ~/.config/environment.d/
+fi
 
 backup_if_exists ~/.config/fish/config.fish
 cp -a "$REPO_DIR/config/fish/config.fish" ~/.config/fish/config.fish

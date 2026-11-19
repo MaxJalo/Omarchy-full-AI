@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "maxjalo.vpn",
+  "name": "VPN (Happ)",
+  "version": "1.0.0",
+  "author": "maxjalo",
+  "description": "Quick toggle/launcher button for Happ VPN beside Wi-Fi.",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "Widget.qml"
+  },
+  "barWidget": {
+    "displayName": "VPN (Happ)",
+    "category": "Network",
+    "allowMultiple": false,
+    "defaultSection": "right"
+  }
+}

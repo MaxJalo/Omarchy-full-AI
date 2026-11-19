@@ -1,6 +1,8 @@
 -- Personal keybindings for Hyprland (Windows-inspired + AI-first, bloat-free)
 
 -- === AI & Development ===
+hl.unbind("SUPER + RETURN")
+o.bind("SUPER + RETURN", "Terminal", "omarchy-launch-terminal")
 o.bind("SUPER + SHIFT + A", "OpenCode", "omarchy-launch-or-focus-tui --app-id=org.omarchy.opencode /home/maxjalo/.opencode/bin/opencode --auto")
 o.bind("SUPER + ALT + A", "OpenCode Quick AI", "omarchy-launch-or-focus-tui --app-id=TUI.float /home/maxjalo/.opencode/bin/opencode mini")
 o.bind("SUPER + SHIFT + T", "New Ghostty Terminal", "ghostty")
