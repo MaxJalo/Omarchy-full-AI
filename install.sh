@@ -120,8 +120,21 @@ sudo chown -R root:root /usr/share/sddm/themes/maxjalo-glass
 sudo chmod 755 /usr/share/sddm/themes/maxjalo-glass
 sudo chmod 644 /usr/share/sddm/themes/maxjalo-glass/*
 sudo cp -a "$REPO_DIR"/sddm/conf.d/*.conf /etc/sddm.conf.d/
-if [[ -f /etc/sddm.conf.d/autologin.conf ]]; then
-  sudo mv /etc/sddm.conf.d/autologin.conf /etc/sddm.conf.d/autologin.conf.bak
+if [[ -f /etc/sddm.conf.d/autologin.conf || -f /etc/sddm.conf.d/autologin.conf.bak ]]; then
+  sudo rm -f /etc/sddm.conf.d/autologin.conf /etc/sddm.conf.d/autologin.conf.bak
+fi
+
+# 6b. Install Plymouth Liquid Glass LUKS unlock theme
+if [[ -d "$REPO_DIR/plymouth/maxjalo-glass" ]] && command -v plymouth-set-default-theme >/dev/null 2>&1; then
+  echo "==> Installing Plymouth theme (maxjalo-glass)..."
+  sudo rm -rf /usr/share/plymouth/themes/maxjalo-glass
+  sudo mkdir -p /usr/share/plymouth/themes/maxjalo-glass
+  sudo cp -a "$REPO_DIR"/plymouth/maxjalo-glass/* /usr/share/plymouth/themes/maxjalo-glass/
+  sudo chown -R root:root /usr/share/plymouth/themes/maxjalo-glass
+  sudo chmod 755 /usr/share/plymouth/themes/maxjalo-glass
+  sudo chmod 644 /usr/share/plymouth/themes/maxjalo-glass/*
+  sudo plymouth-set-default-theme maxjalo-glass
+  command -v limine-update >/dev/null 2>&1 && sudo limine-update || true
 fi
 
 # 7. Apply live if running inside Hyprland

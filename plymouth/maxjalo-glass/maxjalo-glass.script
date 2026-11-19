@@ -1,0 +1,157 @@
+# Maxjalo Glass Plymouth Theme Script
+
+Window.SetBackgroundTopColor(0.035, 0.043, 0.055);
+Window.SetBackgroundBottomColor(0.035, 0.043, 0.055);
+
+bg.original = Image("background.png");
+bg.scaled = bg.original.Scale(Window.GetWidth(), Window.GetHeight());
+bg.sprite = Sprite(bg.scaled);
+bg.sprite.SetPosition(0, 0, -10);
+bg.sprite.SetOpacity(1);
+
+# Scale factor relative to 1080p reference
+scale_x = Window.GetWidth() / 1920.0;
+scale_y = Window.GetHeight() / 1080.0;
+ui_scale = (scale_x < scale_y) ? scale_x : scale_y;
+if (ui_scale < 0.5) ui_scale = 0.5;
+
+# User badge
+badge.orig = Image("badge.png");
+badge.img = badge.orig.Scale(Math.Int(badge.orig.GetWidth() * ui_scale), Math.Int(badge.orig.GetHeight() * ui_scale));
+badge.sprite = Sprite(badge.img);
+badge.x = Window.GetWidth() / 2 - badge.img.GetWidth() / 2;
+
+# Entry pill at 78% vertical position
+entry.orig = Image("entry.png");
+entry.img = entry.orig.Scale(Math.Int(entry.orig.GetWidth() * ui_scale), Math.Int(entry.orig.GetHeight() * ui_scale));
+entry.sprite = Sprite(entry.img);
+entry.x = Window.GetWidth() / 2 - entry.img.GetWidth() / 2;
+entry.y = Math.Int(Window.GetHeight() * 0.78) - entry.img.GetHeight() / 2;
+entry.sprite.SetPosition(entry.x, entry.y, 100);
+entry.sprite.SetOpacity(0);
+
+badge.y = entry.y - badge.img.GetHeight() - Math.Int(18 * ui_scale);
+badge.sprite.SetPosition(badge.x, badge.y, 100);
+badge.sprite.SetOpacity(1);
+
+bullet.orig = Image("bullet.png");
+bullet.size = Math.Int(12 * ui_scale);
+if (bullet.size < 6) bullet.size = 6;
+bullet.gap = Math.Int(8 * ui_scale);
+bullet.img = bullet.orig.Scale(bullet.size, bullet.size);
+bullet.sprites = [];
+
+# Progress bar
+progress_box.orig = Image("progress_box.png");
+progress_box.img = progress_box.orig.Scale(Math.Int(progress_box.orig.GetWidth() * ui_scale), Math.Int(progress_box.orig.GetHeight() * ui_scale));
+progress_box.sprite = Sprite(progress_box.img);
+progress_box.x = Window.GetWidth() / 2 - progress_box.img.GetWidth() / 2;
+progress_box.y = entry.y + entry.img.GetHeight() / 2 - progress_box.img.GetHeight() / 2;
+progress_box.sprite.SetPosition(progress_box.x, progress_box.y, 90);
+progress_box.sprite.SetOpacity(0);
+
+progress_bar.orig = Image("progress_bar.png");
+progress_bar.full_w = Math.Int(progress_bar.orig.GetWidth() * ui_scale);
+progress_bar.full_h = Math.Int(progress_bar.orig.GetHeight() * ui_scale);
+progress_bar.sprite = Sprite();
+progress_bar.sprite.SetPosition(Window.GetWidth() / 2 - progress_bar.full_w / 2, progress_box.y, 95);
+progress_bar.sprite.SetOpacity(0);
+
+global.animation_frame = 0;
+global.fake_progress = 0.0;
+global.fake_progress_active = 0;
+global.fake_progress_start_time = 0.0;
+global.password_shown = 0;
+global.max_progress = 0.0;
+
+fun update_progress_bar(progress) {
+  if (progress > global.max_progress) {
+    global.max_progress = progress;
+    w = Math.Int(progress_bar.full_w * progress);
+    if (w < 1) w = 1;
+    progress_bar.img = progress_bar.orig.Scale(w, progress_bar.full_h);
+    progress_bar.sprite.SetImage(progress_bar.img);
+  }
+}
+
+fun refresh_callback() {
+  global.animation_frame++;
+  if (global.fake_progress_active == 1) {
+    elapsed = global.animation_frame / 50.0;
+    ratio = elapsed / 12.0;
+    if (ratio > 1.0) ratio = 1.0;
+    eased = 1 - ((1 - ratio) * (1 - ratio));
+    update_progress_bar(eased * 0.75);
+  }
+}
+Plymouth.SetRefreshFunction(refresh_callback);
+
+fun hide_bullets() {
+  for (i = 0; bullet.sprites[i]; i++) {
+    bullet.sprites[i].SetOpacity(0);
+  }
+}
+
+fun display_normal_callback() {
+  entry.sprite.SetOpacity(0);
+  hide_bullets();
+  mode = Plymouth.GetMode();
+  if ((mode == "boot" || mode == "resume") && global.password_shown == 1) {
+    progress_box.sprite.SetOpacity(1);
+    progress_bar.sprite.SetOpacity(1);
+    global.fake_progress_active = 1;
+  }
+}
+
+fun display_password_callback(prompt, bullets) {
+  global.password_shown = 1;
+  global.fake_progress_active = 0;
+  progress_box.sprite.SetOpacity(0);
+  progress_bar.sprite.SetOpacity(0);
+  entry.sprite.SetOpacity(1);
+  hide_bullets();
+
+  count = bullets;
+  if (count > 22) count = 22;
+
+  if (count > 1) {
+    total_w = count * bullet.size + (count - 1) * bullet.gap;
+  } else {
+    total_w = count * bullet.size;
+  }
+  start_x = Window.GetWidth() / 2 - total_w / 2;
+  bullet_y = entry.y + entry.img.GetHeight() / 2 - bullet.size / 2;
+
+  for (i = 0; i < count; i++) {
+    if (!bullet.sprites[i]) {
+      bullet.sprites[i] = Sprite(bullet.img);
+    }
+    bullet.sprites[i].SetPosition(start_x + i * (bullet.size + bullet.gap), bullet_y, 105);
+    bullet.sprites[i].SetOpacity(1);
+  }
+}
+
+Plymouth.SetDisplayNormalFunction(display_normal_callback);
+Plymouth.SetDisplayPasswordFunction(display_password_callback);
+
+fun progress_callback(duration, progress) {
+  if (global.fake_progress_start_time == 0.0) global.fake_progress_start_time = duration;
+  if (duration > global.fake_progress_start_time && progress > global.max_progress) {
+    global.fake_progress_active = 0;
+    update_progress_bar(progress);
+  }
+}
+Plymouth.SetBootProgressFunction(progress_callback);
+
+message_sprite = Sprite();
+message_sprite.SetPosition(24, 24, 200);
+fun display_message_callback(text) {
+  msg = Image.Text(text, 0.9, 0.93, 0.92);
+  message_sprite.SetImage(msg);
+  message_sprite.SetOpacity(1);
+}
+fun hide_message_callback(text) {
+  message_sprite.SetOpacity(0);
+}
+Plymouth.SetDisplayMessageFunction(display_message_callback);
+Plymouth.SetHideMessageFunction(hide_message_callback);
