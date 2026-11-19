@@ -120,9 +120,6 @@ sudo chown -R root:root /usr/share/sddm/themes/maxjalo-glass
 sudo chmod 755 /usr/share/sddm/themes/maxjalo-glass
 sudo chmod 644 /usr/share/sddm/themes/maxjalo-glass/*
 sudo cp -a "$REPO_DIR"/sddm/conf.d/*.conf /etc/sddm.conf.d/
-if [[ -f /etc/sddm.conf.d/autologin.conf || -f /etc/sddm.conf.d/autologin.conf.bak ]]; then
-  sudo rm -f /etc/sddm.conf.d/autologin.conf /etc/sddm.conf.d/autologin.conf.bak
-fi
 
 # 6b. Install Plymouth Liquid Glass LUKS unlock theme
 if [[ -d "$REPO_DIR/plymouth/maxjalo-glass" ]] && command -v plymouth-set-default-theme >/dev/null 2>&1; then
