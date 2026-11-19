@@ -1,5 +1,3 @@
-# Dynamic theme colors
-config-file = ?"~/.local/state/omarchy/current/theme/ghostty.conf"
 command = /usr/bin/fish --login --interactive
 
 # Font
@@ -23,12 +21,12 @@ window-padding-balance = true
 confirm-close-surface = false
 resize-overlay = never
 
-# GPU acceleration, transparency & custom GLSL shader
-background-opacity = 0.88
+# GPU acceleration, transparency & animated Ghostty smoke/ghost shader
+background-opacity = 0.95
 background-opacity-cells = true
-unfocused-split-opacity = 0.82
-custom-shader = ~/.config/ghostty/shaders/cursor_glow.glsl
-custom-shader-animation = true
+unfocused-split-opacity = 0.85
+custom-shader = /home/maxjalo/.config/ghostty/shaders/ghost.glsl
+custom-shader-animation = always
 
 # Cursor & mouse UX
 cursor-style = "block"
@@ -58,3 +56,6 @@ keybind = super+control+shift+alt+arrow_right=resize_split:right,100
 
 # Fix general slowness on hyprland
 async-backend = epoll
+
+# Dynamic Omarchy theme colors (always loaded last)
+config-file = ?"~/.local/state/omarchy/current/theme/ghostty.conf"
