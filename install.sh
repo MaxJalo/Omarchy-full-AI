@@ -62,11 +62,17 @@ if [[ -x /usr/lib/qt6/bin/qsb ]]; then
   /usr/lib/qt6/bin/qsb --qt6 -o ~/.config/omarchy/plugins/maxjalo.background/rain.frag.qsb ~/.config/omarchy/plugins/maxjalo.background/rain.frag
 fi
 
-# 5. Copy OpenCode configs (preserving existing API key if present)
+# 5. Copy OpenCode configs & install local MCP servers (preserving existing API key)
 EXISTING_KEY=""
 if [[ -f ~/.config/opencode/opencode.json ]]; then
   EXISTING_KEY="$(python3 -c 'import json,pathlib; d=json.loads(pathlib.Path.home().joinpath(".config/opencode/opencode.json").read_text()); k=d.get("provider",{}).get("polza",{}).get("options",{}).get("apiKey",""); print("" if k.startswith("{env:") else k)' 2>/dev/null || true)"
   backup_if_exists ~/.config/opencode/opencode.json
+fi
+
+if command -v npm >/dev/null 2>&1; then
+  mkdir -p ~/.local/share/opencode-mcp
+  printf '{"name":"opencode-mcp-servers","private":true}\n' > ~/.local/share/opencode-mcp/package.json
+  (cd ~/.local/share/opencode-mcp && NODE_OPTIONS="--dns-result-order=ipv4first" npm install --no-audit --no-fund @modelcontextprotocol/server-sequential-thinking @modelcontextprotocol/server-memory @playwright/mcp) || true
 fi
 
 cp -a "$REPO_DIR/config/opencode/cli.json" ~/.config/opencode/cli.json
@@ -76,15 +82,15 @@ cp -a "$REPO_DIR/config/opencode/agents" ~/.config/opencode/
 cp -a "$REPO_DIR/config/opencode/skills" ~/.config/opencode/
 cp -a "$REPO_DIR/config/opencode/plugins" ~/.config/opencode/
 
-if [[ -n "$EXISTING_KEY" ]]; then
-  python3 - "$EXISTING_KEY" <<'PY'
+python3 - "$EXISTING_KEY" <<'PY'
 import json, sys, pathlib
 p = pathlib.Path.home() / ".config/opencode/opencode.json"
-d = json.loads(p.read_text())
-d["provider"]["polza"]["options"]["apiKey"] = sys.argv[1]
+raw = p.read_text().replace("__HOME__", str(pathlib.Path.home()))
+d = json.loads(raw)
+if sys.argv[1]:
+    d["provider"]["polza"]["options"]["apiKey"] = sys.argv[1]
 p.write_text(json.dumps(d, indent=2, ensure_ascii=False) + "\n")
 PY
-fi
 
 # Ensure forest.jpg is available in ~/Pictures for lock screen
 mkdir -p ~/Pictures

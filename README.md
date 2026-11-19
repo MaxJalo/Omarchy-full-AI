@@ -16,7 +16,9 @@
 * **Ghostty + Fish:**
   * Единственный системный терминал (`Ghostty`) с вкладками сверху, полупрозрачностью и без приветствия `fish`
 * **OpenCode V2 (`Cursor`-уровень):**
-  * `LSP`, `Context7 MCP` (актуальная документация библиотек), локальный плагин уведомлений `omarchy-notify`, агенты (`architect`, `reviewer`, `ui-designer`), 4 глобальных скилла (`qml-quickshell`, `git-workflow`, `code-review`, `linux-sysadmin`) и хоткеи `Ctrl+K`, `Ctrl+B`, `<leader>d`
+  * `LSP`, локальный плагин уведомлений `omarchy-notify`, агенты (`architect`, `reviewer`, `ui-designer`), 4 глобальных скилла (`qml-quickshell`, `git-workflow`, `code-review`, `linux-sysadmin`) и хоткеи `Ctrl+K`, `Ctrl+B`, `<leader>d`
+  * **4 MCP-сервера:** `context7` (актуальная документация), `sequential-thinking` (глубокое рассуждение), `memory` (граф памяти между сессиями), `playwright` (автоматизация браузера)
+* **VPN клиент:** нативный **Happ** (`4.7.2`) с `happd` демоном и поддержкой VLESS/Reality/VMess/подписок
 
 ## Основные горячие клавиши
 | Сочетание | Действие |

@@ -5560,6 +5560,33 @@
         "type": "remote",
         "url": "https://mcp.context7.com/mcp",
         "timeout": 15000
+      },
+      "sequential-thinking": {
+        "type": "local",
+        "command": [
+          "__HOME__/.local/share/opencode-mcp/node_modules/.bin/mcp-server-sequential-thinking"
+        ],
+        "timeout": 10000
+      },
+      "memory": {
+        "type": "local",
+        "command": [
+          "__HOME__/.local/share/opencode-mcp/node_modules/.bin/mcp-server-memory"
+        ],
+        "environment": {
+          "MEMORY_FILE_PATH": "__HOME__/.local/share/opencode/memory.json"
+        },
+        "timeout": 10000
+      },
+      "playwright": {
+        "type": "local",
+        "command": [
+          "__HOME__/.local/share/opencode-mcp/node_modules/.bin/playwright-mcp",
+          "--headless",
+          "--executable-path",
+          "/usr/bin/chromium"
+        ],
+        "timeout": 15000
       }
     }
   }

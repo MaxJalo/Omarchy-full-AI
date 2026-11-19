@@ -25,11 +25,7 @@ vec2 N22(vec2 p) {
     return fract(vec2(a.x * a.y, a.y * a.z));
 }
 
-float saw(float b, float t) {
-    return smoothstep(0.0, b, t) * smoothstep(1.0, b, t);
-}
-
-// Returns vec3(refractionOffset.xy, dropMask)
+// stUv has +Y pointing UP. Increasing t slides drops DOWNWARD on screen.
 vec3 rainDropLayer(vec2 UV, float t, float scale) {
     vec2 uv = UV * scale;
     uv.y += t * 0.25;
@@ -62,9 +58,9 @@ vec3 rainDropLayer(vec2 UV, float t, float scale) {
     return vec3(offs, mask);
 }
 
-// Falling overcast rain streaks in screen space
+// Falling overcast rain streaks moving TOP -> BOTTOM (+Y is UP)
 float fallingStreak(vec2 uv, float t, float slant, float density, float speed) {
-    vec2 p = vec2(uv.x + uv.y * slant, uv.y);
+    vec2 p = vec2(uv.x - uv.y * slant, uv.y);
     p.x *= density;
     float colId = floor(p.x);
     float rand = N13(colId * 13.7 + speed);
@@ -79,24 +75,23 @@ float fallingStreak(vec2 uv, float t, float slant, float density, float speed) {
 void main() {
     vec2 uv = qt_TexCoord0;
     float aspect = max(iResX, 1.0) / max(iResY, 1.0);
-    vec2 aspectUv = vec2((uv.x - 0.5) * aspect, uv.y - 0.5);
+    // Flip Y so +Y is UP (matching Shadertoy droplet & rain math)
+    vec2 stUv = vec2((uv.x - 0.5) * aspect, -(uv.y - 0.5));
 
-    // Two layers of screen-glass water droplets
-    vec3 d1 = rainDropLayer(aspectUv, iTime * 0.72, 6.5);
-    vec3 d2 = rainDropLayer(aspectUv + vec2(0.37, 0.19), iTime * 0.92, 11.5);
+    vec3 d1 = rainDropLayer(stUv, iTime * 0.72, 6.5);
+    vec3 d2 = rainDropLayer(stUv + vec2(0.37, 0.19), iTime * 0.92, 11.5);
 
     vec2 totalOffs = d1.xy * 0.55 + d2.xy * 0.35;
     float dropHighlight = clamp(d1.z * 0.08 + d2.z * 0.05, 0.0, 0.12);
 
-    vec2 sampleUv = clamp(uv - totalOffs, vec2(0.002), vec2(0.998));
+    // Flip Y offset back to screen texture coordinates (+Y down)
+    vec2 sampleUv = clamp(uv - vec2(totalOffs.x, -totalOffs.y), vec2(0.002), vec2(0.998));
     vec3 col = texture(sourceTexture, sampleUv).rgb;
 
-    // Slight overcast cool atmospheric grade
     col *= vec3(0.97, 0.99, 1.03);
 
-    // Slanted falling rain streaks
-    float s1 = fallingStreak(aspectUv, iTime, 0.16, 48.0, 1.85);
-    float s2 = fallingStreak(aspectUv + vec2(0.13, 0.41), iTime, 0.14, 78.0, 2.35);
+    float s1 = fallingStreak(stUv, iTime, 0.14, 48.0, 1.85);
+    float s2 = fallingStreak(stUv + vec2(0.13, 0.41), iTime, 0.12, 78.0, 2.35);
     float streaks = s1 * 0.12 + s2 * 0.07;
 
     col += vec3(0.78, 0.86, 0.96) * (streaks + dropHighlight);
