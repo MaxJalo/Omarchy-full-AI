@@ -1,0 +1,32 @@
+mode = "dark"
+
+# Palette sampled from rain-cat.jpg (rainy forest stream, misty teal & warm lantern glow)
+accent = "#63b5a4"
+selection = "#28403a"
+muted = "#485d56"
+
+background = "#101815"
+dark_background = "#0b110f"
+darker_background = "#070b0a"
+lighter_background = "#1b2823"
+
+foreground = "#d4ded9"
+dark_foreground = "#5b7068"
+light_foreground = "#9fb3aa"
+bright_foreground = "#edf4f0"
+
+red = "#d97268"
+yellow = "#d4b475"
+orange = "#d9885b"
+green = "#78b382"
+cyan = "#63b5a4"
+blue = "#5e97a8"
+magenta = "#a685b8"
+brown = "#6e4e3d"
+
+bright_red = "#e6857c"
+bright_yellow = "#e5c887"
+bright_green = "#8ec998"
+bright_cyan = "#7ccbc0"
+bright_blue = "#78b2c4"
+bright_magenta = "#bc9dcf"

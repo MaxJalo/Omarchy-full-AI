@@ -1250,16 +1250,16 @@ Item {
     margins {
       top: root.barHidden && root.position === "top"
         ? -(root.barSize + 10)
-        : (root.position === "top" ? 2 : (root.vertical ? 6 : 0))
+        : (root.position === "top" ? 0 : (root.vertical ? 6 : 0))
       bottom: root.barHidden && root.position === "bottom"
         ? -(root.barSize + 10)
-        : (root.position === "bottom" ? 2 : (root.vertical ? 6 : 0))
+        : (root.position === "bottom" ? 0 : (root.vertical ? 6 : 0))
       left: root.barHidden && root.position === "left"
         ? -(root.barSize + 10)
-        : (root.position === "left" ? 2 : (!root.vertical ? Style.space(10) : 0))
+        : (root.position === "left" ? 0 : (!root.vertical ? Style.space(10) : 0))
       right: root.barHidden && root.position === "right"
         ? -(root.barSize + 10)
-        : (root.position === "right" ? 2 : (!root.vertical ? Style.space(10) : 0))
+        : (root.position === "right" ? 0 : (!root.vertical ? Style.space(10) : 0))
     }
 
     anchors {

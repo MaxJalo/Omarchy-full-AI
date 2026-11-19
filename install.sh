@@ -34,7 +34,7 @@ backup_if_exists() {
   fi
 }
 
-mkdir -p ~/.config/{hypr,ghostty,fish,omarchy/plugins,omarchy/defaults,omarchy/backgrounds/blasphemous,opencode,environment.d} ~/.local/share/applications
+mkdir -p ~/.config/{hypr,ghostty/shaders,fish,omarchy/plugins,omarchy/themes,omarchy/defaults,omarchy/backgrounds/blasphemous,opencode,environment.d} ~/.local/share/applications
 
 # 3. Copy Hyprland, Ghostty, Fish, Starship, XDG terminal
 backup_if_exists ~/.config/hypr
@@ -43,6 +43,9 @@ cp -a "$REPO_DIR"/config/hypr/.luarc.json ~/.config/hypr/
 
 backup_if_exists ~/.config/ghostty/config
 cp -a "$REPO_DIR/config/ghostty/config" ~/.config/ghostty/config
+if [[ -d "$REPO_DIR/config/ghostty/shaders" ]]; then
+  cp -a "$REPO_DIR"/config/ghostty/shaders/* ~/.config/ghostty/shaders/
+fi
 if [[ -f "$REPO_DIR/config/applications/com.mitchellh.ghostty.desktop" ]]; then
   cp -a "$REPO_DIR/config/applications/com.mitchellh.ghostty.desktop" ~/.local/share/applications/
   command -v update-desktop-database >/dev/null 2>&1 && update-desktop-database ~/.local/share/applications || true
@@ -62,6 +65,9 @@ cp -a "$REPO_DIR/config/omarchy/shell.json" ~/.config/omarchy/shell.json
 cp -a "$REPO_DIR/config/omarchy/shell.toml" ~/.config/omarchy/shell.toml
 cp -a "$REPO_DIR"/config/omarchy/defaults/* ~/.config/omarchy/defaults/
 cp -a "$REPO_DIR"/config/omarchy/plugins/* ~/.config/omarchy/plugins/
+if [[ -d "$REPO_DIR/config/omarchy/themes" ]]; then
+  cp -a "$REPO_DIR"/config/omarchy/themes/* ~/.config/omarchy/themes/
+fi
 cp -a "$REPO_DIR"/config/omarchy/backgrounds/blasphemous/* ~/.config/omarchy/backgrounds/blasphemous/
 
 if [[ -x /usr/lib/qt6/bin/qsb ]]; then
@@ -121,7 +127,8 @@ fi
 # 7. Apply live if running inside Hyprland
 if command -v hyprctl >/dev/null 2>&1 && hyprctl monitors >/dev/null 2>&1; then
   hyprctl reload || true
-  omarchy theme bg set ~/.config/omarchy/backgrounds/blasphemous/rain-cat.jpg || true
+  omarchy theme set rainy-forest || true
+  omarchy theme bg set ~/.config/omarchy/themes/rainy-forest/backgrounds/0-rain-cat.jpg || true
   omarchy restart shell || true
 fi
 
