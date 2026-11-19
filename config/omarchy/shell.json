@@ -77,15 +77,17 @@
       ]
     },
     "position": "top",
-    "transparent": false
+    "transparent": true
   },
   "cloneSourceRestores": [
     "maxjalo.lock",
-    "maxjalo.background"
+    "maxjalo.background",
+    "maxjalo.idle"
   ],
   "disabledPlugins": [
     "omarchy.lock",
-    "omarchy.background"
+    "omarchy.background",
+    "omarchy.idle"
   ],
   "idle": {
     "lock": 300,
@@ -97,6 +99,9 @@
     },
     {
       "id": "maxjalo.background"
+    },
+    {
+      "id": "maxjalo.idle"
     }
   ],
   "version": 1
