@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "maxjalo.gpu-memory",
+  "name": "GPU Memory",
+  "version": "1.0.0",
+  "author": "maxjalo",
+  "description": "GPU0 memory from nvidia-smi in GiB with Nerd Font icon",
+  "kinds": ["bar-widget"],
+  "entryPoints": {
+    "barWidget": "Widget.qml"
+  },
+  "barWidget": {
+    "displayName": "GPU Memory",
+    "description": "Shows 󰢮 NVIDIA GPU memory used/total in GiB",
+    "category": "System",
+    "allowMultiple": false
+  }
+}

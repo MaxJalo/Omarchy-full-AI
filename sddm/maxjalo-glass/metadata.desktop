@@ -1,0 +1,11 @@
+[SddmGreeterTheme]
+Name=Maxjalo Glass
+Description=macOS Liquid Glass login theme unified with maxjalo.lock
+Author=maxjalo
+Type=sddm-theme
+Version=1.0
+Theme-Id=maxjalo-glass
+Theme-API=2.0
+MainScript=Main.qml
+ConfigFile=theme.conf
+QtVersion=6

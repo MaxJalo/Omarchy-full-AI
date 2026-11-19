@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "maxjalo.gpu-load",
+  "name": "GPU Load",
+  "version": "1.0.0",
+  "author": "maxjalo",
+  "description": "GPU0 utilization from nvidia-smi with Nerd Font icon",
+  "kinds": ["bar-widget"],
+  "entryPoints": {
+    "barWidget": "Widget.qml"
+  },
+  "barWidget": {
+    "displayName": "GPU Load",
+    "description": "Shows 󰢮 NVIDIA GPU utilization",
+    "category": "System",
+    "allowMultiple": false
+  }
+}

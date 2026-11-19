@@ -1,0 +1,7 @@
+*.bak
+*.bak.*
+*.log
+node_modules/
+service.json
+.DS_Store
+opencode.json.tui-migration.bak

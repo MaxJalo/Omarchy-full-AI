@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "maxjalo.weather",
+  "name": "My Weather",
+  "version": "1.0.0",
+  "author": "Omarchy",
+  "description": "Weather with Nerd Font condition icon and compact temperature",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "BarWidget.qml"
+  },
+  "barWidget": {
+    "displayName": "My Weather",
+    "description": "Shows {weather_icon} {temperature}° in the bar",
+    "category": "Info",
+    "allowMultiple": false,
+    "settingsForm": "weatherSettings"
+  },
+  "omarchy": {
+    "clonedFrom": "omarchy.weather"
+  }
+}

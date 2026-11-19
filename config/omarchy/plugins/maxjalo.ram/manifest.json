@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "maxjalo.ram",
+  "name": "RAM Usage",
+  "version": "1.0.0",
+  "author": "maxjalo",
+  "description": "Memory usage from /proc/meminfo with Nerd Font icon",
+  "kinds": ["bar-widget"],
+  "entryPoints": {
+    "barWidget": "Widget.qml"
+  },
+  "barWidget": {
+    "displayName": "RAM",
+    "description": "Shows 󰍛 used/total RAM",
+    "category": "System",
+    "allowMultiple": false
+  }
+}

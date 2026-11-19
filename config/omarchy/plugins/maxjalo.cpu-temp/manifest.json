@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "maxjalo.cpu-temp",
+  "name": "CPU Temperature",
+  "version": "1.0.0",
+  "author": "maxjalo",
+  "description": "CPU temperature sensor with warning thresholds",
+  "kinds": ["bar-widget"],
+  "entryPoints": {
+    "barWidget": "Widget.qml"
+  },
+  "barWidget": {
+    "displayName": "CPU Temp",
+    "description": "Shows 󰏈 CPU temperature",
+    "category": "System",
+    "allowMultiple": false
+  }
+}

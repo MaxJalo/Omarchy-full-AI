@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "maxjalo.btop",
+  "name": "btop Launcher",
+  "version": "1.0.0",
+  "author": "maxjalo",
+  "description": "Launch btop from a Nerd Font icon button",
+  "kinds": ["bar-widget"],
+  "entryPoints": {
+    "barWidget": "Widget.qml"
+  },
+  "barWidget": {
+    "displayName": "btop",
+    "description": "Opens btop in floating terminal from 󰄨 icon",
+    "category": "System",
+    "allowMultiple": false
+  }
+}

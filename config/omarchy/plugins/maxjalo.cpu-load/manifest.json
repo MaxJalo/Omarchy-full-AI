@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "maxjalo.cpu-load",
+  "name": "CPU Load",
+  "version": "1.0.0",
+  "author": "maxjalo",
+  "description": "CPU usage from /proc/stat with Nerd Font icon",
+  "kinds": ["bar-widget"],
+  "entryPoints": {
+    "barWidget": "Widget.qml"
+  },
+  "barWidget": {
+    "displayName": "CPU Load",
+    "description": "Shows 󰻠 CPU usage percent",
+    "category": "System",
+    "allowMultiple": false
+  }
+}
